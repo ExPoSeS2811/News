@@ -8,14 +8,23 @@
 import UIKit
 import SnapKit
 
-class GeneralCollectionViewCell: UICollectionViewCell {
+final class GeneralCollectionViewCell: UICollectionViewCell {
     // MARK: - GUI variables
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let view = UIImageView()
         
         view.image = UIImage(named: "image") ?? UIImage.remove
         
         return view
+    }()
+    
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "title"
+        label.textColor = .white
+        
+        return label
     }()
     
     private lazy var blackView: UIView = {
@@ -25,15 +34,6 @@ class GeneralCollectionViewCell: UICollectionViewCell {
         view.alpha = 0.5
         
         return view
-    }()
-    
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "title"
-        label.textColor = .white
-        
-        return label
     }()
     
     // MARK: - Initializations
@@ -46,6 +46,12 @@ class GeneralCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    func configure(news: News) {
+        imageView.image = news.imageNews
+        titleLabel.text = news.title
     }
     
     // MARK: - Private methods
@@ -73,3 +79,12 @@ class GeneralCollectionViewCell: UICollectionViewCell {
         }
     }
 }
+
+/*
+ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     if let generalDetailsVC = segue.destination as? GeneralDetailsViewController {
+         guard let indexPath = collectionView.indexPathsForSelectedItems else { return false }
+         generalDetailsVC
+     }
+ }
+ */

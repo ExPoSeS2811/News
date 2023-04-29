@@ -42,6 +42,7 @@ class GeneralViewController: UIViewController {
     }()
     
     // MARK: - Properties
+    private let dataSource = News.getNews()
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -51,6 +52,7 @@ class GeneralViewController: UIViewController {
     }
     
     // MARK: - Methods
+    
     
     // - MARK: - Private methods
     private func setupUI() {
@@ -78,19 +80,25 @@ class GeneralViewController: UIViewController {
 
 extension GeneralViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        20
-        
+        dataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GeneralCollectionViewCell", for: indexPath) as? GeneralCollectionViewCell else { return UICollectionViewCell() }
-        
+        let news = dataSource[indexPath.row]
+        cell.configure(news: news)
         return cell
     }
-    
-    
 }
 
 extension GeneralViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let generalDetailsViewController = GeneralDetailsViewController()
+        
+        generalDetailsViewController.imageView.image = dataSource[indexPath.row].imageNews
+        generalDetailsViewController.titleLabel.text = dataSource[indexPath.row].title
+        generalDetailsViewController.descriptionLabel.text = dataSource[indexPath.row].description
+        
+        navigationController?.pushViewController(generalDetailsViewController, animated: true)
+    }
 }
