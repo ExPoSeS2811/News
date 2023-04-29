@@ -9,6 +9,17 @@ import UIKit
 
 final class GeneralDetailsViewController: UIViewController {
     // MARK: - GUI Variables
+    lazy var scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        
+        scroll.isPagingEnabled = true
+        scroll.showsVerticalScrollIndicator = false
+        scroll.bounces = true
+        scroll.contentSize = view.frame.size
+        return scroll
+        
+    }()
+    
     lazy var imageView: UIImageView = {
         let view = UIImageView()
         
@@ -20,10 +31,6 @@ final class GeneralDetailsViewController: UIViewController {
         view.clipsToBounds = true
         view.layer.cornerRadius = 16
         view.layer.cornerCurve = .continuous
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowColor = UIColor.systemIndigo.cgColor
-        view.layer.shadowRadius = 2
-        view.layer.shadowOpacity = 1
             
         return view
     }()
@@ -69,20 +76,23 @@ final class GeneralDetailsViewController: UIViewController {
     // MARK: - Private methods
     private func setupUI() {
         view.backgroundColor = .white
-        
-        view.addSubview(imageView)
-        view.addSubview(titleLabel)
-        view.addSubview(descriptionLabel)
+        view.addSubview(scrollView)
+        scrollView.addSubview(imageView)
+        scrollView.addSubview(titleLabel)
+        scrollView.addSubview(descriptionLabel)
+
         setupConstraints()
     }
     
     private func setupConstraints() {
         // configureImageView()
-        
+        scrollView.snp.makeConstraints { make in
+            make.top.bottom.left.right.equalTo(view.safeAreaLayoutGuide)            
+        }
+
         imageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(300)
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.trailing.leading.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -93,7 +103,7 @@ final class GeneralDetailsViewController: UIViewController {
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
             make.leading.trailing.equalTo(titleLabel)
-
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
     }
 
