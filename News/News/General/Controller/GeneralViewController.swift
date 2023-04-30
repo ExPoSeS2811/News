@@ -95,10 +95,10 @@ extension GeneralViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let generalDetailsViewController = GeneralDetailsViewController()
         
-        generalDetailsViewController.imageView.image = dataSource[indexPath.row].imageNews
-        generalDetailsViewController.titleLabel.text = dataSource[indexPath.row].title
-        generalDetailsViewController.descriptionLabel.text = dataSource[indexPath.row].description
-        
+//        generalDetailsViewController.imageView.image = dataSource[indexPath.row].imageNews
+//        generalDetailsViewController.titleLabel.text = dataSource[indexPath.row].title
+//        generalDetailsViewController.descriptionLabel.text = dataSource[indexPath.row].description
+//        
         navigationController?.pushViewController(generalDetailsViewController, animated: true)
     }
 }

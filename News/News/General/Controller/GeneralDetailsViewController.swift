@@ -9,62 +9,60 @@ import UIKit
 
 final class GeneralDetailsViewController: UIViewController {
     // MARK: - GUI Variables
-    lazy var scrollView: UIScrollView = {
-        let scroll = UIScrollView()
+    private lazy var newsScrollView: UIScrollView = {
+        let scrollView = UIScrollView()
         
-        scroll.isPagingEnabled = true
-        scroll.showsVerticalScrollIndicator = false
-        scroll.bounces = true
-        scroll.contentSize = view.frame.size
-        return scroll
+        scrollView.contentSize = contentSize
+        scrollView.showsVerticalScrollIndicator = false
         
+        return scrollView
     }()
     
-    lazy var imageView: UIImageView = {
-        let view = UIImageView()
+    private lazy var newsImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image =  #imageLiteral(resourceName: "image")
+        imageView.layer.cornerRadius = 24
+        imageView.layer.cornerCurve = .continuous
+        imageView.layer.shadowColor = UIColor.systemIndigo.cgColor
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        imageView.layer.shadowOpacity = 1
+        imageView.layer.masksToBounds = true
+
+
         
-        if let generalImage {
-            view.image = generalImage
-        }
-        
-        view.contentMode = .scaleAspectFill
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 16
-        view.layer.cornerCurve = .continuous
-            
-        return view
+        return imageView
     }()
     
-    lazy var titleLabel: UILabel = {
+    private lazy var newsTitleLabel: UILabel = {
         let label = UILabel()
         
-        if let generalTitle {
-            label.text = generalTitle
-        }
-        
-        label.font = .boldSystemFont(ofSize: 32)
+        label.font = .boldSystemFont(ofSize: 28)
         label.numberOfLines = 0
+        label.text = "Title for u"
+        label.textColor = .black
 
         
         return label
     }()
     
-    lazy var descriptionLabel: UILabel = {
+    private lazy var newsDescriptionLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .italicSystemFont(ofSize: 16)
+        label.font = .italicSystemFont(ofSize: 14)
         label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
+        label.text = "oifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjj"
+        label.translatesAutoresizingMaskIntoConstraints = false // установите это в false
+
         
         return label
     }()
-    
+
     // MARK: - Properties
-    var generalImage: UIImage?
-    var generalTitle: String?
+    private var contentSize: CGSize {
+        CGSize(width: view.frame.width, height: 10000)
+    }
     
     // MARK: - Life cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .systemIndigo
@@ -76,35 +74,33 @@ final class GeneralDetailsViewController: UIViewController {
     // MARK: - Private methods
     private func setupUI() {
         view.backgroundColor = .white
-        view.addSubview(scrollView)
-        scrollView.addSubview(imageView)
-        scrollView.addSubview(titleLabel)
-        scrollView.addSubview(descriptionLabel)
-
+        newsScrollView.addSubview(newsImageView)
+        newsScrollView.addSubview(newsTitleLabel)
+        newsScrollView.addSubview(newsDescriptionLabel)
+        view.addSubview(newsScrollView)
         setupConstraints()
     }
     
     private func setupConstraints() {
-        // configureImageView()
-        scrollView.snp.makeConstraints { make in
-            make.top.bottom.left.right.equalTo(view.safeAreaLayoutGuide)            
+        newsScrollView.snp.makeConstraints { make in
+            make.top.left.right.bottom.equalToSuperview()
         }
-
-        imageView.snp.makeConstraints { make in
+        
+        newsImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.trailing.leading.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
         
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(24)
-            make.leading.trailing.equalTo(imageView)
+        newsTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(newsImageView.snp.bottom).offset(8)
+            make.left.right.equalTo(newsImageView)
         }
         
-        descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.leading.trailing.equalTo(titleLabel)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+        newsDescriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(newsTitleLabel.snp.bottom).offset(16)
+            make.left.right.equalTo(newsTitleLabel)
         }
+        
     }
 
     /*
