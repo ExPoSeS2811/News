@@ -17,7 +17,7 @@ struct News {
             News(
                 title: "Tesla Unveils New Electric Car Model",
                 imageNews: UIImage(named: "image") ?? UIImage.actions,
-                description: "Tesla has unveiled its latest electric car model, which promises to be the most powerful and efficient yet. The car features a range of new technologies, including an advanced battery system that can be charged in just a few minutes. With a top speed of 250 mph and a range of over 500 miles, the new Tesla is set to revolutionize the electric car market."
+                description: "Tesla has unveiled its latest electric car model, which promises to be the most powerful and efficient yet. The car features a range of new technologies, including an advanced battery system that can be charged in just a few minutes. With a top speed of 250 mph and a range of over 500 miles, the new Tesla is set to revolutionize the electric car market. "
             ),
             News(
                 title: "AI Researchers Develop New Algorithm",

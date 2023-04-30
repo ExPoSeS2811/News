@@ -5,9 +5,7 @@ final class GeneralDetailsViewController: UIViewController {
     lazy var newsScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
-        scrollView.isPagingEnabled = true
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.bounces = true
         scrollView.contentSize = view.frame.size
         
         return scrollView
@@ -87,7 +85,7 @@ final class GeneralDetailsViewController: UIViewController {
         newsScrollView.snp.makeConstraints { make in
             make.top.bottom.left.right.equalTo(view.safeAreaLayoutGuide)
         }
-    
+        
         containerForNewsImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.trailing.leading.equalTo(view.safeAreaLayoutGuide).inset(16)
@@ -105,6 +103,7 @@ final class GeneralDetailsViewController: UIViewController {
         newsDescriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(newsTitleLabel.snp.bottom).offset(8)
             make.leading.trailing.equalTo(newsTitleLabel)
+            make.bottom.equalToSuperview().offset(-20)
         }
     }
     
