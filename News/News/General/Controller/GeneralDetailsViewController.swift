@@ -1,66 +1,66 @@
-//
-//  GeneralDetailsViewController.swift
-//  News
-//
-//  Created by MacBook Pro 13 2019 on 4/29/23.
-//
-
 import UIKit
 
 final class GeneralDetailsViewController: UIViewController {
     // MARK: - GUI Variables
-    private lazy var newsScrollView: UIScrollView = {
+    lazy var newsScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
-        scrollView.contentSize = contentSize
+        scrollView.isPagingEnabled = true
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.bounces = true
+        scrollView.contentSize = view.frame.size
         
         return scrollView
     }()
     
-    private lazy var newsImageView: UIImageView = {
+    lazy var containerForNewsImageView: UIView = {
+        let view = UIView()
+        
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 2, height: 4)
+        view.layer.shadowOpacity = 1
+        view.layer.shadowRadius = 4
+        
+        view.alpha = 0
+        UIView.animate(withDuration: 1) {
+            view.alpha = 1
+        }
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
+        return view
+    }()
+    
+    lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image =  #imageLiteral(resourceName: "image")
-        imageView.layer.cornerRadius = 24
+        
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 48
         imageView.layer.cornerCurve = .continuous
-        imageView.layer.shadowColor = UIColor.systemIndigo.cgColor
-        imageView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        imageView.layer.shadowOpacity = 1
-        imageView.layer.masksToBounds = true
-
-
         
         return imageView
     }()
     
-    private lazy var newsTitleLabel: UILabel = {
+    lazy var newsTitleLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .boldSystemFont(ofSize: 28)
+        label.font = .boldSystemFont(ofSize: 32)
         label.numberOfLines = 0
-        label.text = "Title for u"
-        label.textColor = .black
-
         
         return label
     }()
     
-    private lazy var newsDescriptionLabel: UILabel = {
+    lazy var newsDescriptionLabel: UILabel = {
         let label = UILabel()
         
-        label.font = .italicSystemFont(ofSize: 14)
+        label.font = .italicSystemFont(ofSize: 16)
         label.numberOfLines = 0
-        label.text = "oifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjjoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjfaslfjasoifjsaoifjj"
-        label.translatesAutoresizingMaskIntoConstraints = false // установите это в false
-
+        label.lineBreakMode = .byWordWrapping
         
         return label
     }()
-
-    // MARK: - Properties
-    private var contentSize: CGSize {
-        CGSize(width: view.frame.width, height: 10000)
-    }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -68,49 +68,58 @@ final class GeneralDetailsViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .systemIndigo
         setupUI()
     }
-    
-    // MARK: - Methods
-    
+        
     // MARK: - Private methods
     private func setupUI() {
         view.backgroundColor = .white
-        newsScrollView.addSubview(newsImageView)
+        
+        containerForNewsImageView.addSubview(newsImageView)
+        newsScrollView.addSubview(containerForNewsImageView)
         newsScrollView.addSubview(newsTitleLabel)
         newsScrollView.addSubview(newsDescriptionLabel)
         view.addSubview(newsScrollView)
+        
         setupConstraints()
+        
     }
     
     private func setupConstraints() {
         newsScrollView.snp.makeConstraints { make in
-            make.top.left.right.bottom.equalToSuperview()
+            make.top.bottom.left.right.equalTo(view.safeAreaLayoutGuide)
         }
-        
+    
+        containerForNewsImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.trailing.leading.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
+
         newsImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.top.trailing.leading.bottom.equalToSuperview()
         }
         
         newsTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(newsImageView.snp.bottom).offset(8)
-            make.left.right.equalTo(newsImageView)
+            make.top.equalTo(containerForNewsImageView.snp.bottom).offset(24)
+            make.leading.trailing.equalTo(containerForNewsImageView)
         }
         
         newsDescriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(newsTitleLabel.snp.bottom).offset(16)
-            make.left.right.equalTo(newsTitleLabel)
+            make.top.equalTo(newsTitleLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(newsTitleLabel)
         }
+    }
+    
+    @objc
+    private func handleTap(_ sender: UITapGestureRecognizer) {
+        let containerLayer = containerForNewsImageView.layer
         
+        UIView.animate(withDuration: 0.2, animations: {
+            containerLayer.shadowOpacity = 0
+        }) { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                UIView.animate(withDuration: 0.2) {
+                    containerLayer.shadowOpacity = 1
+                }
+            }
+        }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
