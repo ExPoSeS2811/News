@@ -2,7 +2,7 @@ import UIKit
 
 final class GeneralDetailsViewController: UIViewController {
     // MARK: - GUI Variables
-    lazy var newsScrollView: UIScrollView = {
+    private lazy var newsScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
         scrollView.showsVerticalScrollIndicator = false
@@ -11,7 +11,7 @@ final class GeneralDetailsViewController: UIViewController {
         return scrollView
     }()
     
-    lazy var containerForNewsImageView: UIView = {
+    private lazy var containerForNewsImageView: UIView = {
         let view = UIView()
         
         view.layer.shadowColor = UIColor.black.cgColor
@@ -30,9 +30,10 @@ final class GeneralDetailsViewController: UIViewController {
         return view
     }()
     
-    lazy var newsImageView: UIImageView = {
+    private lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
         
+//        imageView.image = news?.imageNews
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 48
@@ -41,24 +42,40 @@ final class GeneralDetailsViewController: UIViewController {
         return imageView
     }()
     
-    lazy var newsTitleLabel: UILabel = {
+    private lazy var newsDateLabel: UILabel = {
         let label = UILabel()
         
+        label.text = "23.01.02"
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 12)
+        label.numberOfLines = 0
+        label.textColor = .darkGray
+        
+        return label
+    }()
+    
+    private lazy var newsTitleLabel: UILabel = {
+        let label = UILabel()
+        
+//        label.text = news?.title
         label.font = .boldSystemFont(ofSize: 32)
         label.numberOfLines = 0
         
         return label
     }()
     
-    lazy var newsDescriptionLabel: UILabel = {
+    private lazy var newsDescriptionLabel: UILabel = {
         let label = UILabel()
         
+//        label.text = news?.description
         label.font = .italicSystemFont(ofSize: 16)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         
         return label
     }()
+    
+    // MARK: - Properties
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -73,6 +90,7 @@ final class GeneralDetailsViewController: UIViewController {
         
         containerForNewsImageView.addSubview(newsImageView)
         newsScrollView.addSubview(containerForNewsImageView)
+        newsScrollView.addSubview(newsDateLabel)
         newsScrollView.addSubview(newsTitleLabel)
         newsScrollView.addSubview(newsDescriptionLabel)
         view.addSubview(newsScrollView)
@@ -83,7 +101,7 @@ final class GeneralDetailsViewController: UIViewController {
     
     private func setupConstraints() {
         newsScrollView.snp.makeConstraints { make in
-            make.top.bottom.left.right.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         containerForNewsImageView.snp.makeConstraints { make in
@@ -92,12 +110,17 @@ final class GeneralDetailsViewController: UIViewController {
         }
 
         newsImageView.snp.makeConstraints { make in
-            make.top.trailing.leading.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
+        }
+        
+        newsDateLabel.snp.makeConstraints { make in
+            make.top.equalTo(containerForNewsImageView.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(containerForNewsImageView)
         }
         
         newsTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(containerForNewsImageView.snp.bottom).offset(24)
-            make.leading.trailing.equalTo(containerForNewsImageView)
+            make.top.equalTo(newsDateLabel.snp.bottom).offset(24)
+            make.leading.trailing.equalTo(newsDateLabel)
         }
         
         newsDescriptionLabel.snp.makeConstraints { make in

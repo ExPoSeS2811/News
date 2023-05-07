@@ -13,7 +13,7 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
     lazy var imageView: UIImageView = {
         let view = UIImageView()
         
-        view.image = UIImage(named: "image") ?? UIImage.remove
+        view.contentMode = .scaleAspectFill
         
         return view
     }()
@@ -49,9 +49,15 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func configure(news: News) {
-        imageView.image = news.imageNews
-        titleLabel.text = news.title
+    func set(article: ArticleCellViewModel) {
+        titleLabel.text = article.title
+        
+        if let data = article.imageData,
+           let image = UIImage(data: data) {
+            imageView.image = image
+        } else {
+            imageView.image = #imageLiteral(resourceName: "image")
+        }
     }
     
     // MARK: - Private methods
