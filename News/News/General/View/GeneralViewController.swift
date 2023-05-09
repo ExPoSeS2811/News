@@ -110,7 +110,9 @@ extension GeneralViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GeneralCollectionViewCell", for: indexPath) as? GeneralCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "GeneralCollectionViewCell",
+            for: indexPath) as? GeneralCollectionViewCell else { return UICollectionViewCell() }
         
         let article = viewModel.getArticle(for: indexPath.row)
         cell.set(article: article)
