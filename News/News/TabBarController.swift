@@ -19,7 +19,7 @@ final class TabBarController: UITabBarController {
     private func setupViewControllers() {
         viewControllers = [
             setupNavigationController(
-                rootViewController: GeneralViewController(viewModel: GeneralViewModel()),
+                rootViewController: GeneralViewController(),
                 title: "General",
                 image: UIImage(systemName: "newspaper") ?? UIImage.add
             ),
@@ -43,8 +43,9 @@ final class TabBarController: UITabBarController {
         
         navigationController.tabBarItem.title = title
         navigationController.tabBarItem.image = image
-        rootViewController.navigationItem.title = title
         navigationController.navigationBar.prefersLargeTitles = true
+
+        rootViewController.navigationItem.title = title
         
         return navigationController
     }

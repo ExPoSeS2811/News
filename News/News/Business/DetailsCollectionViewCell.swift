@@ -13,7 +13,7 @@ class DetailsCollectionViewCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
         
-        view.image = UIImage(named: "image")
+        view.image = #imageLiteral(resourceName: "image")
         view.contentMode = .scaleAspectFill
         view.layer.masksToBounds = true
         

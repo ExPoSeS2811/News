@@ -43,8 +43,7 @@ final class BusinessViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupUI()
+        view.backgroundColor = .blue
     }
     
     // MARK: - Methods
@@ -55,7 +54,7 @@ final class BusinessViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(collectionView)
         
-        collectionView.register(GeneralCollectionViewCell.self, forCellWithReuseIdentifier: "GeneralCollectionViewCell")
+//        collectionView.register(GeneralCollectionViewCell.self, forCellWithReuseIdentifier: "GeneralCollectionViewCell")
         collectionView.register(DetailsCollectionViewCell.self, forCellWithReuseIdentifier: "DetailsCollectionViewCell")
         
         setupConstraints()
@@ -82,9 +81,9 @@ extension BusinessViewController: UICollectionViewDataSource {
         var cell: UICollectionViewCell?
         
         if indexPath.section == 0 {
-            cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "GeneralCollectionViewCell",
-                for: indexPath) as? GeneralCollectionViewCell
+//            cell = collectionView.dequeueReusableCell(
+//                withReuseIdentifier: "GeneralCollectionViewCell",
+//                for: indexPath) as? GeneralCollectionViewCell
         } else {
             cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "DetailsCollectionViewCell",
@@ -98,9 +97,9 @@ extension BusinessViewController: UICollectionViewDataSource {
 
 extension BusinessViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let generalDetailsViewController = GeneralDetailsViewController()
+//        let generalDetailsViewController = GeneralDetailsViewController()
     
-        navigationController?.pushViewController(generalDetailsViewController, animated: true)
+//        navigationController?.pushViewController(generalDetailsViewController, animated: true)
     }
 }
 

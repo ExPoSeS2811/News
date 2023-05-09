@@ -1,30 +1,15 @@
-//
-//  GeneralCollectionViewCell.swift
-//  News
-//
-//  Created by MacBook Pro 13 2019 on 4/29/23.
-//
-
 import UIKit
-import SnapKit
 
 final class GeneralCollectionViewCell: UICollectionViewCell {
-    // MARK: - GUI variables
-    lazy var imageView: UIImageView = {
-        let view = UIImageView()
+    // MARK: GUI Variables
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
         
-        view.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "image")
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
         
-        return view
-    }()
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "title"
-        label.textColor = .white
-        
-        return label
+        return imageView
     }()
     
     private lazy var blackView: UIView = {
@@ -36,33 +21,29 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    // MARK: - Initializations
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        
+        label.font = .boldSystemFont(ofSize: 16)
+        label.textColor = .white
+        label.text = "Title here"
+        label.numberOfLines = 2
+        
+        return label
+    }()
+    
+    // MARK: Initializations
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupUI()
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Methods
-    func set(article: ArticleCellViewModel) {
-        titleLabel.text = article.title
-        
-        if let data = article.imageData,
-           let image = UIImage(data: data) {
-            imageView.image = image
-        } else {
-            imageView.image = #imageLiteral(resourceName: "image")
-        }
-    }
-    
     // MARK: - Private methods
     private func setupUI() {
-        
         addSubview(imageView)
         addSubview(blackView)
         addSubview(titleLabel)
@@ -86,12 +67,3 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
         }
     }
 }
-
-/*
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     if let generalDetailsVC = segue.destination as? GeneralDetailsViewController {
-         guard let indexPath = collectionView.indexPathsForSelectedItems else { return false }
-         generalDetailsVC
-     }
- }
- */
