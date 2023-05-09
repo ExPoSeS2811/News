@@ -76,8 +76,5 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             make.leading.equalTo(imageView.snp.trailing).offset(5)
             make.trailing.equalToSuperview()
         }
-        
-        
     }
-    
 }

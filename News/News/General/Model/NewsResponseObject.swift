@@ -1,11 +1,11 @@
 import Foundation
 
 struct NewsResponseObject: Codable {
-    let totalResult: Int
+    let totalResults: Int
     let articles: [ArticleResponseObject]
     
     enum CodingKeys: CodingKey {
-        case totalResult
+        case totalResults
         case articles
     }
 }
