@@ -5,7 +5,6 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         
-        imageView.image = UIImage(named: "image")
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         
@@ -26,7 +25,6 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
         
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = .white
-        label.text = "Title here"
         label.numberOfLines = 2
         
         return label
@@ -45,6 +43,11 @@ final class GeneralCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     func set(article: ArticleCellViewModel) {
         titleLabel.text = article.title
+        
+        if let data = article.imageData {
+            let image = UIImage(data: data)
+            imageView.image = image ?? #imageLiteral(resourceName: "image")
+        }
     }
     
     // MARK: - Private methods

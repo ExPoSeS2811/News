@@ -3,6 +3,7 @@ import Foundation
 protocol GeneralViewModelProtocol {
     var reloadData: (() -> Void)? { get set }
     var showError: ((String) -> Void)? {get set}
+    var reloadCell: ((Int) -> Void)? { get set }
     
     var numberOfCells: Int { get }
 
@@ -11,11 +12,12 @@ protocol GeneralViewModelProtocol {
 }
 
 final class GeneralViewModel: GeneralViewModelProtocol {
+    var reloadCell: ((Int) -> Void)?
     var reloadData: (() -> Void)?
     var showError: ((String) -> Void)?
     
     // MARK: - Properties
-    private var articles: [ArticleResponseObject] = [] {
+    private var articles: [ArticleCellViewModel] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.reloadData?()
@@ -34,32 +36,34 @@ final class GeneralViewModel: GeneralViewModelProtocol {
     
     func getArticle(for row: Int) -> ArticleCellViewModel {
         let article = articles[row]
-        return ArticleCellViewModel(article: article)
+        loadImage(for: row)
+        return article
     }
     
     private func loadData() {
         ApiManager.getNews { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let articles):
-                self?.articles = articles
+                self.articles = self.converToCellViewModel(articles)
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.showError?(error.localizedDescription)
+                    self.showError?(error.localizedDescription)
                 }
             }
         }
     }
     
-//    private func setupMockObjects() {
-//        articles = [
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//            ArticleResponseObject(title: "asfopkfsa", description: "asofkaopsfk", urlToImage: "fksaljfoasjf", date: "seiojfiasfj"),
-//        ]
-//    }
+    private func converToCellViewModel(_ articles: [ArticleResponseObject]) -> [ArticleCellViewModel] {
+        articles.map { ArticleCellViewModel(article: $0) }
+    }
+    
+    private func loadImage(for row: Int) {
+        // TODO: get image data
+        guard let url = URL(string: articles[row].imageUrl),
+              let data = try? Data(contentsOf: url) else { return }
+        articles[row].imageData = data
+        reloadCell?(row)
+        
+    }
 }
