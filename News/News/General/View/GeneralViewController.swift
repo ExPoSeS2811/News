@@ -84,6 +84,8 @@ extension GeneralViewController: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegate
 extension GeneralViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let controller = 
+        let controller = NewsViewController()
+        
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

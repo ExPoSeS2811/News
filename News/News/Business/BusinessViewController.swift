@@ -12,7 +12,7 @@ final class BusinessViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let width = (view.frame.width - 15) / 2
-
+        
         layout.minimumLineSpacing = 5
         layout.minimumInteritemSpacing = 5
         layout.sectionInset = UIEdgeInsets(
@@ -43,7 +43,7 @@ final class BusinessViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
+        setupUI()
     }
     
     // MARK: - Methods
@@ -54,7 +54,7 @@ final class BusinessViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(collectionView)
         
-//        collectionView.register(GeneralCollectionViewCell.self, forCellWithReuseIdentifier: "GeneralCollectionViewCell")
+        collectionView.register(GeneralCollectionViewCell.self, forCellWithReuseIdentifier: "GeneralCollectionViewCell")
         collectionView.register(DetailsCollectionViewCell.self, forCellWithReuseIdentifier: "DetailsCollectionViewCell")
         
         setupConstraints()
@@ -81,25 +81,23 @@ extension BusinessViewController: UICollectionViewDataSource {
         var cell: UICollectionViewCell?
         
         if indexPath.section == 0 {
-//            cell = collectionView.dequeueReusableCell(
-//                withReuseIdentifier: "GeneralCollectionViewCell",
-//                for: indexPath) as? GeneralCollectionViewCell
+            cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "GeneralCollectionViewCell",
+                for: indexPath) as? GeneralCollectionViewCell
         } else {
             cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "DetailsCollectionViewCell",
                 for: indexPath) as? DetailsCollectionViewCell
         }
-//        let news = dataSource[indexPath.row]
-//        cell.configure(news: news)
+        
         return cell ?? UICollectionViewCell()
     }
 }
 
 extension BusinessViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let generalDetailsViewController = GeneralDetailsViewController()
-    
-//        navigationController?.pushViewController(generalDetailsViewController, animated: true)
+        let generalDetailsViewController = NewsViewController()
+        navigationController?.pushViewController(generalDetailsViewController, animated: true)
     }
 }
 
