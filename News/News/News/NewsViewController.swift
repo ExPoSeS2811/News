@@ -20,7 +20,7 @@ final class NewsViewController: UIViewController {
         view.layer.shadowRadius = 4
         
         view.alpha = 0
-        UIView.animate(withDuration: 1) {
+        UIView.animate(withDuration: 0.3) {
             view.alpha = 1
         }
         
@@ -33,11 +33,11 @@ final class NewsViewController: UIViewController {
     private lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
         
-        imageView.image = #imageLiteral(resourceName: "image")
         imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 48
         imageView.layer.cornerCurve = .continuous
+        imageView.clipsToBounds = true
+        
         
         return imageView
     }()
@@ -45,7 +45,6 @@ final class NewsViewController: UIViewController {
     private lazy var newsDateLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "23.01.02"
         label.textAlignment = .center
         label.font = .boldSystemFont(ofSize: 12)
         label.numberOfLines = 0
@@ -57,7 +56,6 @@ final class NewsViewController: UIViewController {
     private lazy var newsTitleLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Title"
         label.font = .boldSystemFont(ofSize: 32)
         label.numberOfLines = 0
         
@@ -67,7 +65,6 @@ final class NewsViewController: UIViewController {
     private lazy var newsDescriptionLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "lsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosgelsdfasejlfapoegpoiaehkejglahelkgaekgoidgjergjposerhj;laerjgkaehtkjkhtposkykaesbkjjeotakr[pohjadljkgwkjgjaosge"
         label.font = .italicSystemFont(ofSize: 16)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -76,8 +73,18 @@ final class NewsViewController: UIViewController {
     }()
     
     // MARK: - Properties
+    private var viewModel: NewsViewModelProtocol
     
     // MARK: - Life cycle
+    init(viewModel: NewsViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .systemIndigo
@@ -95,6 +102,15 @@ final class NewsViewController: UIViewController {
         newsScrollView.addSubview(newsDescriptionLabel)
         view.addSubview(newsScrollView)
         
+        newsTitleLabel.text = viewModel.title
+        newsDescriptionLabel.text = viewModel.description
+        newsDateLabel.text = viewModel.date
+        
+        if let data = viewModel.imageData {
+            let image = UIImage(data: data)
+            newsImageView.image = image ?? #imageLiteral(resourceName: "image")
+        }
+        
         setupConstraints()
         
     }
@@ -111,6 +127,7 @@ final class NewsViewController: UIViewController {
 
         newsImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.height.equalTo(300)
         }
         
         newsDateLabel.snp.makeConstraints { make in

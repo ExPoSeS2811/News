@@ -96,8 +96,8 @@ extension BusinessViewController: UICollectionViewDataSource {
 
 extension BusinessViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let generalDetailsViewController = NewsViewController()
-        navigationController?.pushViewController(generalDetailsViewController, animated: true)
+//        let generalDetailsViewController = NewsViewController()
+//        navigationController?.pushViewController(generalDetailsViewController, animated: true)
     }
 }
 
