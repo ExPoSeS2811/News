@@ -12,22 +12,14 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.tintColor = .black
         setupViewControllers()
+        setupTabBar()
     }
     
     private func setupViewControllers() {
-        let navigationController = UINavigationController(rootViewController: GeneralViewController())
-        navigationController.tabBarItem.title = "General"
-        navigationController.tabBarItem.image = UIImage(systemName: "newspaper")
-        navigationController.title = "General"
-        navigationController.navigationBar.prefersLargeTitles = true
-        
-        
-        
         viewControllers = [
             setupNavigationController(
-                rootViewController: GeneralViewController(),
+                rootViewController: GeneralViewController(viewModel: GeneralViewModel()),
                 title: "General",
                 image: UIImage(systemName: "newspaper") ?? UIImage.add
             ),
@@ -51,9 +43,17 @@ final class TabBarController: UITabBarController {
         
         navigationController.tabBarItem.title = title
         navigationController.tabBarItem.image = image
-        rootViewController.navigationItem.title = title
         navigationController.navigationBar.prefersLargeTitles = true
+
+        rootViewController.navigationItem.title = title
         
         return navigationController
+    }
+    
+    private func setupTabBar() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        tabBar.scrollEdgeAppearance = appearance
+        view.tintColor = .black
     }
 }

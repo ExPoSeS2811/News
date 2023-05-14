@@ -1,21 +1,14 @@
-//
-//  GeneralCollectionViewCell.swift
-//  News
-//
-//  Created by MacBook Pro 13 2019 on 4/29/23.
-//
-
 import UIKit
-import SnapKit
 
-class GeneralCollectionViewCell: UICollectionViewCell {
-    // MARK: - GUI variables
+final class GeneralCollectionViewCell: UICollectionViewCell {
+    // MARK: GUI Variables
     private lazy var imageView: UIImageView = {
-        let view = UIImageView()
+        let imageView = UIImageView()
         
-        view.image = UIImage(named: "image") ?? UIImage.remove
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
         
-        return view
+        return imageView
     }()
     
     private lazy var blackView: UIView = {
@@ -30,22 +23,31 @@ class GeneralCollectionViewCell: UICollectionViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "title"
+        label.font = .boldSystemFont(ofSize: 16)
         label.textColor = .white
+        label.numberOfLines = 2
         
         return label
     }()
     
-    // MARK: - Initializations
+    // MARK: Initializations
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupUI()
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    func set(article: ArticleCellViewModel) {
+        titleLabel.text = article.title
+        
+        if let data = article.imageData {
+            let image = UIImage(data: data)
+            imageView.image = image ?? #imageLiteral(resourceName: "image")
+        }
     }
     
     // MARK: - Private methods
