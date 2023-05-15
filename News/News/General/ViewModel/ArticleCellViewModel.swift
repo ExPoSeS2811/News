@@ -8,9 +8,9 @@ struct ArticleCellViewModel {
     var imageData: Data?
     
     init(article: ArticleResponseObject) {
-        self.title = article.title
-        self.description = article.description
-        self.date = article.date
-        self.imageUrl = article.urlToImage
+        self.title = article.title ?? " "
+        self.description = article.description ?? " "
+        self.date = article.date ?? " "
+        self.imageUrl = article.urlToImage ?? " "
     }
 }
