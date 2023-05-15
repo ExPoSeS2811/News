@@ -63,7 +63,7 @@ final class GeneralViewController: UIViewController {
         
         viewModel.showError = { error in
             // TODO: Show error alert
-            print(error)
+            self.showAlert(title: "Error", message: error)
         }
     }
     

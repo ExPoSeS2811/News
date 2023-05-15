@@ -1,17 +1,17 @@
 import Foundation
 
-protocol GeneralViewModelProtocol {
+protocol BusinessViewModelProtocol {
     var reloadData: (() -> Void)? { get set }
     var showError: ((String) -> Void)? {get set}
     var reloadCell: ((Int) -> Void)? { get set }
     
     var numberOfCells: Int { get }
 
+    func loadData()
     func getArticle(for row: Int) -> ArticleCellViewModel
-
 }
 
-final class GeneralViewModel: GeneralViewModelProtocol {
+final class BusinessViewModel: BusinessViewModelProtocol {
     var reloadCell: ((Int) -> Void)?
     var reloadData: (() -> Void)?
     var showError: ((String) -> Void)?
@@ -30,17 +30,14 @@ final class GeneralViewModel: GeneralViewModelProtocol {
         return articles.count
     }
     
-    init() {
-        loadData()
-    }
-    
     func getArticle(for row: Int) -> ArticleCellViewModel {
         return articles[row]
     }
     
-    private func loadData() {
-        ApiManager.getNews(from: .general) { [weak self] result in
+    func loadData() {
+        ApiManager.getNews(from: .business) { [weak self] result in
             guard let self = self else { return }
+            
             switch result {
             case .success(let articles):
                 self.articles = self.convertToCellViewModel(articles)
