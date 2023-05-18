@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		730569632A166069009C53FF /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730569622A166069009C53FF /* BaseViewModel.swift */; };
+		730569632A166069009C53FF /* NewsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730569622A166069009C53FF /* NewsListViewModel.swift */; };
 		731134B12A0A539C0038D7CA /* GeneralCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731134B02A0A539C0038D7CA /* GeneralCollectionViewCell.swift */; };
 		731134B32A0A59690038D7CA /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731134B22A0A59690038D7CA /* NewsViewController.swift */; };
 		731134B62A0A5BBB0038D7CA /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731134B52A0A5BBB0038D7CA /* ApiManager.swift */; };
@@ -33,7 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		730569622A166069009C53FF /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		730569622A166069009C53FF /* NewsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListViewModel.swift; sourceTree = "<group>"; };
 		731134B02A0A539C0038D7CA /* GeneralCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralCollectionViewCell.swift; sourceTree = "<group>"; };
 		731134B22A0A59690038D7CA /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		731134B52A0A5BBB0038D7CA /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 			children = (
 				731134B72A0A5C580038D7CA /* GeneralViewModel.swift */,
 				731134BD2A0A5FA20038D7CA /* ArticleCellViewModel.swift */,
-				730569622A166069009C53FF /* BaseViewModel.swift */,
+				730569622A166069009C53FF /* NewsListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -282,7 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73FA6C6529FD2F9C0076D764 /* UIView+addSubviews().swift in Sources */,
-				730569632A166069009C53FF /* BaseViewModel.swift in Sources */,
+				730569632A166069009C53FF /* NewsListViewModel.swift in Sources */,
 				7388A11E2A10A80800ED229F /* UIViewController+showAlert().swift in Sources */,
 				73144FF429FC642300E52BD3 /* TechnologyViewController.swift in Sources */,
 				731134B82A0A5C580038D7CA /* GeneralViewModel.swift in Sources */,
