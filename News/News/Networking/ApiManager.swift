@@ -14,9 +14,10 @@ final class ApiManager {
     // Create url path and make request
     static func getNews(
         from category: Category,
+        page: Int,
         completion: @escaping (Result<[ArticleResponseObject], Error>) -> ()
     ) {
-        let stringUrl = baseUrl + path + "?category=\(category.rawValue)&language=en" + "&apiKey=\(apiKey)"
+        let stringUrl = baseUrl + path + "?category=\(category.rawValue)&language=en&page=\(page)" + "&apiKey=\(apiKey)"
         
         guard let url = URL(string: stringUrl) else { return }
         
@@ -35,9 +36,6 @@ final class ApiManager {
         if let error = error {
             completion(.failure(NetworkingError.networkingError(error)))
         } else if let data = data {
-            let json = try? JSONSerialization.jsonObject(with: data, options: [])
-            print(json)
-            
             do {
                 let model = try JSONDecoder().decode(NewsResponseObject.self, from: data)
                 completion(.success(model.articles))

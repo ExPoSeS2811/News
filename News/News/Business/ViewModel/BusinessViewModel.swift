@@ -3,44 +3,36 @@ import Foundation
 protocol BusinessViewModelProtocol {
     var reloadData: (() -> Void)? { get set }
     var showError: ((String) -> Void)? {get set}
-    var reloadCell: ((Int) -> Void)? { get set }
+    var reloadCell: ((IndexPath) -> Void)? { get set }
+    var sections: [TableCollectionViewSection] { get }
     
-    var numberOfCells: Int { get }
-
     func loadData()
-    func getArticle(for row: Int) -> ArticleCellViewModel
 }
 
 final class BusinessViewModel: BusinessViewModelProtocol {
-    var reloadCell: ((Int) -> Void)?
+    var reloadCell: ((IndexPath) -> Void)?
     var reloadData: (() -> Void)?
     var showError: ((String) -> Void)?
     
     // MARK: - Properties
-    private var articles: [ArticleCellViewModel] = [] {
+    private(set) var sections: [TableCollectionViewSection] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.reloadData?()
-
+                
             }
         }
     }
     
-    var numberOfCells: Int {
-        return articles.count
-    }
-    
-    func getArticle(for row: Int) -> ArticleCellViewModel {
-        return articles[row]
-    }
+    private var page = 0
     
     func loadData() {
-        ApiManager.getNews(from: .business) { [weak self] result in
+        page += 1
+        ApiManager.getNews(from: .business, page: page) { [weak self] result in
             guard let self = self else { return }
-            
             switch result {
             case .success(let articles):
-                self.articles = self.convertToCellViewModel(articles)
+                self.convertToCellViewModel(articles)
                 self.loadImage()
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -52,25 +44,39 @@ final class BusinessViewModel: BusinessViewModelProtocol {
     
     private func loadImage() {
         // TODO: get image data
-//        guard let url = URL(string: articles[row].imageUrl),
-//              let data = try? Data(contentsOf: url) else { return }
-        for (index, article) in articles.enumerated() {
-            ApiManager.getImageData(url: article.imageUrl) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let data):
-                        self?.articles[index].imageData = data
-                        self?.reloadCell?(index)
-                    case .failure(let error):
-                        self?.showError?(error.localizedDescription)
+        //        guard let url = URL(string: articles[row].imageUrl),
+        //              let data = try? Data(contentsOf: url) else { return }
+        for (i, section) in sections.enumerated() {
+            for (index, item) in section.items.enumerated() {
+                if let article = item as? ArticleCellViewModel,
+                   let url = article.imageUrl {
+                    ApiManager.getImageData(url: url) { [weak self] result in
+                        DispatchQueue.main.async {
+                            switch result {
+                            case .success(let data):
+                                if let article = self?.sections[i].items[index] as? ArticleCellViewModel {
+                                    article.imageData = data
+                                }
+                                self?.reloadCell?(IndexPath(row: index, section: i))
+                            case .failure(let error):
+                                self?.showError?(error.localizedDescription)
+                            }
+                        }
                     }
                 }
             }
         }
     }
     
-    private func convertToCellViewModel(_ articles: [ArticleResponseObject]) -> [ArticleCellViewModel] {
-        articles.map { ArticleCellViewModel(article: $0) }
+    private func convertToCellViewModel(_ articles: [ArticleResponseObject]) {
+        var viewModels = articles.map { ArticleCellViewModel(article: $0) }
+        if sections.isEmpty {
+            let firstSection = TableCollectionViewSection(items: [viewModels.removeFirst()])
+            let secondSection = TableCollectionViewSection(items: viewModels)
+            sections = [firstSection, secondSection]
+        } else {
+            sections[1].items += viewModels
+        }
     }
     
 }
