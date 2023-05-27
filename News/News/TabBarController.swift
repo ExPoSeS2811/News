@@ -24,7 +24,7 @@ final class TabBarController: UITabBarController {
                 image: UIImage(systemName: "newspaper") ?? UIImage.add
             ),
             setupNavigationController(
-                rootViewController: BusinessViewController(),
+                rootViewController: BusinessViewController(viewModel: BusinessViewModel()),
                 title: "Business",
                 image: UIImage(systemName: "briefcase") ?? UIImage.add
             ),
@@ -36,9 +36,10 @@ final class TabBarController: UITabBarController {
         ]
     }
     
-    private func setupNavigationController(rootViewController: UIViewController,
-                                            title: String,
-                                            image: UIImage) -> UINavigationController {
+    private func setupNavigationController(
+        rootViewController: UIViewController,
+        title: String,
+        image: UIImage) -> UINavigationController {
         let navigationController = UINavigationController(rootViewController: rootViewController)
         
         navigationController.tabBarItem.title = title

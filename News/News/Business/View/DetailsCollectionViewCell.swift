@@ -77,4 +77,13 @@ class DetailsCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
         }
     }
+    
+    func set(article: ArticleCellViewModel) {
+        titleLabel.text = article.title
+        descriptionLabel.text = article.description
+        if let data = article.imageData {
+            let image = UIImage(data: data)
+            imageView.image = image ?? #imageLiteral(resourceName: "image")
+        }
+    }
 }

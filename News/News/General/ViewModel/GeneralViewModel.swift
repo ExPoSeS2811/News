@@ -4,11 +4,6 @@ protocol GeneralViewModelProtocol {
     var reloadData: (() -> Void)? { get set }
     var showError: ((String) -> Void)? {get set}
     var reloadCell: ((Int) -> Void)? { get set }
-    
-    var numberOfCells: Int { get }
-
-    func getArticle(for row: Int) -> ArticleCellViewModel
-
 }
 
 final class GeneralViewModel: GeneralViewModelProtocol {
@@ -21,25 +16,13 @@ final class GeneralViewModel: GeneralViewModelProtocol {
         didSet {
             DispatchQueue.main.async {
                 self.reloadData?()
-
             }
         }
     }
     
-    var numberOfCells: Int {
-        return articles.count
-    }
-    
-    init() {
-        loadData()
-    }
-    
-    func getArticle(for row: Int) -> ArticleCellViewModel {
-        return articles[row]
-    }
-    
     private func loadData() {
-        ApiManager.getNews { [weak self] result in
+        // TODO: PAGE
+        ApiManager.getNews(from: .general, page: 1) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let articles):
@@ -58,7 +41,8 @@ final class GeneralViewModel: GeneralViewModelProtocol {
 //        guard let url = URL(string: articles[row].imageUrl),
 //              let data = try? Data(contentsOf: url) else { return }
         for (index, article) in articles.enumerated() {
-            ApiManager.getImageData(url: article.imageUrl) { [weak self] result in
+            guard let url = article.imageUrl else { return }
+            ApiManager.getImageData(url: url) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let data):
