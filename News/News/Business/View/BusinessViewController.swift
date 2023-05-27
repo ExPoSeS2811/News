@@ -39,10 +39,10 @@ final class BusinessViewController: UIViewController {
     }()
     
     // MARK: - Properties
-    private var viewModel: BusinessViewModelProtocol
+    private var viewModel: NewsListViewModelProtocol
     
     // MARK: - Life cycle
-    init(viewModel: BusinessViewModelProtocol) {
+    init(viewModel: NewsListViewModelProtocol) {
          self.viewModel = viewModel
          super.init(nibName: nil, bundle: nil)
          setupViewModel()
@@ -59,7 +59,7 @@ final class BusinessViewController: UIViewController {
         collectionView.register(GeneralCollectionViewCell.self, forCellWithReuseIdentifier: "GeneralCollectionViewCell")
         collectionView.register(DetailsCollectionViewCell.self, forCellWithReuseIdentifier: "DetailsCollectionViewCell")
         
-        viewModel.loadData()
+        viewModel.loadData(searchText: nil)
     }
     
     // MARK: - Methods
@@ -141,8 +141,8 @@ extension BusinessViewController: UICollectionViewDelegate {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if indexPath.row == (viewModel.sections[1].items.count - 15) {
-            viewModel.loadData()
+        if indexPath.row == (viewModel.sections[indexPath.section].items.count - 12) {
+            viewModel.loadData(searchText: nil)
         }
     }
 }
